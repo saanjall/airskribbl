@@ -1,0 +1,16 @@
+{
+  "name": "airskribbl",
+  "private": true,
+  "engines": { "node": ">=22.9" },
+  "type": "module",
+  "workspaces": ["client", "server"],
+  "scripts": {
+    "setup:mediapipe": "node scripts/fetch-mediapipe.mjs",
+    "postinstall": "node scripts/fetch-mediapipe.mjs",
+    "dev": "concurrently -n server,client -c magenta,cyan \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build": "npm run build -w client",
+    "start": "npm run start -w server",
+    "test": "node --test server/test/ client/test/"
+  },
+  "devDependencies": { "concurrently": "^9.0.0" }
+}

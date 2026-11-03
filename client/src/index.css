@@ -1,0 +1,279 @@
+@import 'tailwindcss';
+@import '@fontsource/bagel-fat-one/latin-400.css';
+@import '@fontsource-variable/shantell-sans/index.css';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+:root {
+  --lavender: #b9a7ff;
+  --blue: #2b5bff;
+  --pink: #ff4fa3;
+  --yellow: #ffd23f;
+  --mint: #3de8b0;
+
+  --paper: #efe9ff;
+  --paper-dot: #d3c8fb;
+  --card: #ffffff;
+  --card-soft: #f6f2ff;
+  --text: #1e1457;
+  --muted: #5a4e94;
+  --line: #1e1457;
+  --on-accent: #1e1457;
+  --correct-bg: #c9f9e7;
+  --correct-text: #06523a;
+}
+
+:root[data-theme='dark'] {
+  --paper: #150e3a;
+  --paper-dot: #2c2264;
+  --card: #231a5a;
+  --card-soft: #2e2470;
+  --text: #f4f0ff;
+  --muted: #bdb2ea;
+  --line: #b9a7ff;
+  --correct-bg: #0f4d3a;
+  --correct-text: #a8f7dc;
+}
+
+@theme inline {
+  --color-lavender: var(--lavender);
+  --color-blue: var(--blue);
+  --color-pink: var(--pink);
+  --color-yellow: var(--yellow);
+  --color-mint: var(--mint);
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-card-soft: var(--card-soft);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-on-accent: var(--on-accent);
+  --color-correct-bg: var(--correct-bg);
+  --color-correct-text: var(--correct-text);
+  --font-display: 'Bagel Fat One', system-ui, sans-serif;
+  --font-sans: 'Shantell Sans Variable', 'Comic Sans MS', system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  html[data-theme='dark'] {
+    color-scheme: dark;
+  }
+  body {
+    min-height: 100dvh;
+    margin: 0;
+    color: var(--text);
+    background-color: var(--paper);
+    background-image: radial-gradient(var(--paper-dot) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    font-family: var(--font-sans);
+    font-variation-settings: 'BNCE' 8, 'INFM' 30;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.1;
+  }
+  :focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+  [data-theme='dark'] :focus-visible {
+    outline-color: var(--yellow);
+  }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@layer components {
+  /* A sticker: ink outline and a hard shadow, never a soft one. */
+  .sticker {
+    background: var(--card);
+    border: 3px solid var(--line);
+    border-radius: 22px;
+    box-shadow: 5px 5px 0 var(--line);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.55rem 1.15rem;
+    color: var(--on-accent);
+    background: var(--btn, var(--yellow));
+    border: 3px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 4px 4px 0 var(--line);
+    font-weight: 700;
+    transition: transform 120ms ease, box-shadow 120ms ease;
+  }
+  .btn:hover:not(:disabled) {
+    transform: translate(-1px, -2px) rotate(-1deg);
+    box-shadow: 6px 7px 0 var(--line);
+  }
+  .btn:active:not(:disabled) {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 var(--line);
+  }
+  .btn:disabled {
+    opacity: 0.55;
+    box-shadow: 2px 2px 0 var(--line);
+  }
+  .btn-pink { --btn: var(--pink); }
+  .btn-mint { --btn: var(--mint); }
+  .btn-lavender { --btn: var(--lavender); }
+  .btn-plain {
+    --btn: var(--card);
+    color: var(--text);
+  }
+  .btn-big {
+    min-height: 60px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1.2rem;
+    border-radius: 20px;
+  }
+
+  .icon-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--text);
+    background: var(--card);
+    border: 3px solid var(--line);
+    border-radius: 14px;
+    transition: transform 120ms ease, background-color 120ms ease;
+  }
+  .icon-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+  }
+  .icon-btn[aria-pressed='true'] {
+    color: var(--on-accent);
+    background: var(--yellow);
+  }
+  .icon-btn:disabled {
+    opacity: 0.45;
+  }
+
+  .field {
+    width: 100%;
+    min-height: 46px;
+    padding: 0.5rem 0.85rem;
+    color: var(--text);
+    background: var(--card-soft);
+    border: 3px solid var(--line);
+    border-radius: 14px;
+    font-weight: 600;
+  }
+  .field::placeholder {
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    color: var(--yellow);
+    -webkit-text-stroke: 0.09em #1e1457;
+    paint-order: stroke fill;
+    text-shadow: 0.05em 0.06em 0 #1e1457;
+  }
+}
+
+dialog {
+  margin: auto;
+  padding: 0;
+  max-width: min(440px, calc(100vw - 32px));
+  width: 100%;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  overflow: visible;
+}
+dialog::backdrop {
+  background: rgb(30 20 87 / 0.55);
+}
+dialog[open] {
+  animation: pop-in 180ms cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+@keyframes pop-in {
+  from { transform: scale(0.92) rotate(-1.5deg); opacity: 0; }
+}
+
+@keyframes bob {
+  50% { transform: translateY(-9px) rotate(var(--tilt, 3deg)); }
+}
+.bob {
+  animation: bob 5s ease-in-out infinite;
+}
+
+@keyframes fingertip {
+  50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--glow) 35%, transparent), 0 0 22px 6px var(--glow); }
+}
+
+/* The fingertip cursor on the canvas. */
+.air-cursor {
+  --glow: var(--blue);
+  position: absolute;
+  z-index: 5;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  background: var(--glow);
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--glow) 30%, transparent), 0 0 16px 4px var(--glow);
+  pointer-events: none;
+  transition: left 45ms linear, top 45ms linear, background-color 100ms;
+}
+.air-cursor[data-state='draw'] {
+  --glow: var(--pink);
+  animation: fingertip 900ms ease-in-out infinite;
+}
+.air-cursor[data-state='paused'] {
+  --glow: #8d86ad;
+}
+/* With the eraser, the cursor is a ring in the palm, as wide as the wipe. */
+.air-cursor[data-state='wipe'] {
+  width: var(--wipe);
+  height: var(--wipe);
+  margin: calc(var(--wipe) / -2) 0 0 calc(var(--wipe) / -2);
+  background: rgb(255 79 163 / 0.14);
+  border: 3px dashed var(--pink);
+  box-shadow: none;
+}
+.air-cursor[data-state='wipe']::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  background: var(--pink);
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--lavender) transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
