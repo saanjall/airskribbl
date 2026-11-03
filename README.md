@@ -28,9 +28,64 @@ Browsers only share a webcam on `localhost` or HTTPS, so friends on other device
 
 Rooms live in memory, so restarting the server ends all games, and the server must run as a single instance.
 
-## Deploy
+## Deploy on Render
 
-`render.yaml` sets up a Render web service. In Render, choose New, then Blueprint, and connect this repository. Hosts must support WebSockets, serve HTTPS, and install dev dependencies at build time, because Vite is one.
+Render serves the site over HTTPS, so webcams work on every device. The game and its server run together as one web service.
+
+### Option 1: Blueprint (uses `render.yaml`)
+
+1. Sign in at [render.com](https://render.com) with GitHub.
+2. Choose **New**, then **Blueprint**.
+3. Select this repository and connect it.
+4. Leave `GEMINI_API_KEY` blank unless you have a key.
+5. Apply it and wait for the build to finish. Your link appears at the top of the service page.
+
+### Option 2: Web Service (manual setup)
+
+Choose **New**, then **Web Service**, select this repository, and enter:
+
+| Setting | Value |
+| --- | --- |
+| Runtime | Node |
+| Branch | `main` |
+| Build command | `npm install --include=dev && npm run build` |
+| Start command | `npm start` |
+| Health check path | `/health` |
+
+Under **Environment**, add:
+
+| Key | Value |
+| --- | --- |
+| `NODE_VERSION` | `22.12.0` |
+| `GEMINI_API_KEY` | Optional. Leave it out to use the built-in comments. |
+
+Don't set `PORT`: Render provides it. The `--include=dev` flag is required, because Vite is a dev dependency and the build fails without it.
+
+### Update the live site
+
+Render redeploys every push to `main`:
+
+```bash
+git add .
+git commit -m "Describe what changed"
+git push
+```
+
+### Check the deployment
+
+Open `https://your-service.onrender.com/health`. A working server replies:
+
+```json
+{"ok":true,"rooms":0}
+```
+
+### Limits
+
+- On the free plan the service sleeps when idle, so the first visit afterwards can take up to a minute.
+- Rooms live in memory, so a redeploy or sleep ends any game in progress.
+- Run one instance only. Rooms aren't shared between instances.
+
+Other hosts work too if they support WebSockets and HTTPS, run Node 22.9 or newer, and install dev dependencies at build time.
 
 ## How to draw
 
